@@ -19,16 +19,6 @@ class PuzzleState:
     def cost(self):
         return self.heuristic_fn(self)
 
-    def get_solution_path_length(self):
-        state = self
-        moves = 0
-        
-        while state is not None:
-            moves += 1
-            state = state.parent
-            
-        return moves - 1  # Subtract 1 because initial state isn't a move
-
     def spiral_iterator(self, start_index=0):
         for idx, pos in enumerate(SpiralTraverser(self.dimension)):
             if idx >= start_index:
@@ -96,8 +86,7 @@ class PuzzleState:
 
     @classmethod
     def _create_goal_state(cls, dimension):
-        
-        
+        """Create the goal state for the puzzle""" 
         positions = []
         for idx, pos in enumerate(SpiralTraverser(dimension)):
             val = 0 if idx == (dimension ** 2) - 1 else idx + 1
@@ -129,11 +118,6 @@ class PuzzleState:
     def _connect_tiles(self):
         for tile in self.tiles:
             tile.discover_adjacent_tiles()
-
-    def get_target_index_for_value(self, value):
-        if value == 0:
-            return self.dimension ** 2 - 1
-        return value - 1
 
     def _create_tiles(self, values):
         

@@ -62,14 +62,7 @@ def make_goal(s):
 def generate_random_puzzle(size):
     """
     Generate a random solvable puzzle by performing random moves from the goal state.
-    
-    Args:
-        size: Size of the puzzle
-    
-    Returns:
-        Tuple of (dimension, values) for a random puzzle
     """
-    # Create the goal state (spiral pattern)
     puzzle = make_puzzle(size, solvable=True, iterations=10000)
 
     return size, puzzle

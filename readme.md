@@ -1,139 +1,204 @@
-### **🔹 Rappel du problème**
+L'algorithme A* (A star) est un algorithme de recherche de chemin utilisé en intelligence artificielle et en algorithmique pour trouver le chemin optimal d'un point de départ à un point d'arrivée dans un graphe pondéré. Il est couramment utilisé pour la recherche de chemins dans des jeux vidéo, la robotique, et la résolution de puzzles.
 
-**État initial :**
+🔹 Principe de l'algorithme A*
+A* fonctionne en utilisant une fonction de coût pour explorer les chemins potentiels tout en cherchant à minimiser le coût total du trajet. Cette fonction de coût est définie comme :
 
-1  5  8
-4  6  3
-0  2  7
+𝑓
+(
+𝑛
+)
+=
+𝑔
+(
+𝑛
+)
++
+ℎ
+(
+𝑛
+)
+f(n)=g(n)+h(n)
+𝑔
+(
+𝑛
+)
+g(n) : Coût du chemin parcouru depuis le point de départ jusqu'au nœud 
+𝑛
+n.
 
-**État objectif :**
+ℎ
+(
+𝑛
+)
+h(n) : Heuristique estimant le coût restant entre 
+𝑛
+n et l'objectif (c'est une estimation de la distance restante).
 
-1  2  3
-8  0  4
-7  6  5
+𝑓
+(
+𝑛
+)
+f(n) : Estimation du coût total du chemin passant par 
+𝑛
+n.
 
-On applique l’algorithme **A**\* avec :
+A* choisit toujours le nœud ayant la plus petite valeur de 
+𝑓
+(
+𝑛
+)
+f(n), ce qui permet d'optimiser l'exploration.
 
-* **g(n)** = le coût du chemin (nombre de déplacements depuis le départ).
-* **h(n)** = l’heuristique de Manhattan.
-* **f(n) = g(n) + h(n)** = score total utilisé pour choisir le meilleur état à explorer.
+Heuristiques utilisées avec A*
+L'heuristique 
+ℎ
+(
+𝑛
+)
+h(n) est un élément clé de A*, car elle influence la rapidité et l'efficacité de la recherche. Voici trois heuristiques populaires :
 
----
+1️⃣ Distance de Manhattan
+📌 Définition :
+La distance de Manhattan mesure la distance entre deux points dans un espace en grille (comme un échiquier ou un puzzle en 2D). Elle suppose que l'on ne peut se déplacer que horizontalement et verticalement.
 
-## **🔹 Étape 1 : Initialisation**
+ℎ
+(
+𝑛
+)
+=
+∣
+𝑥
+current
+−
+𝑥
+goal
+∣
++
+∣
+𝑦
+current
+−
+𝑦
+goal
+∣
+h(n)=∣x 
+current
+​
+ −x 
+goal
+​
+ ∣+∣y 
+current
+​
+ −y 
+goal
+​
+ ∣
+✔️ Utilisation :
 
-* On démarre avec l’état initial :
+Très utilisée pour les puzzles comme le Taquin (8-puzzle, 15-puzzle).
 
-1  5  8
-4  6  3
-0  2  7
+Efficace pour les déplacements en grille (jeux vidéo, labyrinthe).
 
-* **Calcul de h(n) (heuristique de Manhattan) :**
-  h=16h = 16**h**=**16**
-* **Coût g(n) = 0** (aucun déplacement effectué).
-* **Score f(n) = g + h = 0 + 16 = 16**.
-* On place cet état dans la **file des priorités**.
+2️⃣ Conflit linéaire (Linear Conflict)
+📌 Définition :
+Une amélioration de la distance de Manhattan. Un conflit linéaire se produit lorsque deux tuiles sont dans la bonne ligne ou colonne mais dans le mauvais ordre, ce qui signifie qu'elles devront s'échanger pour atteindre leur position finale.
 
----
+✔️ Formule :
+L'heuristique Linear Conflict est définie comme :
 
-## **🔹 Étape 2 : Développer le premier état**
+ℎ
+(
+𝑛
+)
+=
+Manhattan Distance
++
+2
+×
+(
+nombre de conflits lin
+e
+ˊ
+aires
+)
+h(n)=Manhattan Distance+2×(nombre de conflits lin 
+e
+ˊ
+ aires)
+✔️ Utilisation :
 
-Le **0 (case vide)** peut se déplacer vers le **haut (4)** ou vers la **droite (2)**.
+Très efficace pour les puzzles glissants comme le 8-puzzle ou le 15-puzzle.
 
-### **1️⃣ Déplacer le 0 vers le haut (échanger avec 4) :**
+3️⃣ Nombre de tuiles mal placées (Misplaced Tiles)
+📌 Définition :
+Compte le nombre de tuiles qui ne sont pas à leur place finale.
 
-1  5  8
-0  6  3
-4  2  7
+ℎ
+(
+𝑛
+)
+=
+∑
+𝑖
+=
+1
+𝑁
+1
+(
+𝑡
+𝑖
+≠
+𝑔
+𝑖
+)
+h(n)= 
+i=1
+∑
+N
+​
+ 1(t 
+i
+​
+ 
+
+=g 
+i
+​
+ )
+où 
+1
+(
+𝑡
+𝑖
+≠
+𝑔
+𝑖
+)
+1(t 
+i
+​
+ 
+
+=g 
+i
+​
+ ) est 1 si la tuile 
+𝑡
+𝑖
+t 
+i
+​
+  est mal placée, et 0 sinon.
 
-* **g(n) = 1** (1 déplacement)
-* **h(n) = 15** (somme des distances de Manhattan).
-* **f(n) = g + h = 1 + 15 = 16**.
+✔️ Utilisation :
 
-### **2️⃣ Déplacer le 0 vers la droite (échanger avec 2) :**
+Simple et rapide à calculer.
 
-1  5  8
-4  6  3
-2  0  7
+Moins précise que la distance de Manhattan, mais utile pour une première approche.
 
-* **g(n) = 1**
-* **h(n) = 14**
-* **f(n) = 1 + 14 = 15** ✅
-
-**➡️ On choisit ce deuxième état (score 15, plus prometteur).**
-
----
-
-## **🔹 Étape 3 : Développer le nouvel état**
-
-1  5  8
-4  6  3
-2  0  7
-
-Le **0** peut aller :
-
-* **Haut (6)**
-* **Gauche (2)**
-* **Droite (7)**
-
-### **1️⃣ Déplacer 0 en haut (échanger avec 6) :**
-
-1  5  8
-4  0  3
-2  6  7
-
-* **g(n) = 2**
-* **h(n) = 13**
-* **f(n) = 2 + 13 = 15** ✅
-
-Ce nouvel état est **prioritaire**.
-
----
-
-## **🔹 Étape 4 : Développer l’état suivant**
-
-1  5  8
-4  0  3
-2  6  7
-
-Le **0** peut aller :
-
-* **Haut (5)**
-* **Bas (6)**
-* **Droite (3)**
-
-### **Déplacer 0 en haut (avec 5) :**
-
-1  0  8
-4  5  3
-2  6  7
-
-* **g(n) = 3**
-* **h(n) = 12**
-* **f(n) = 3 + 12 = 15** ✅
-
----
-
-## **🔹 Étape 5 : Continuer jusqu’à la solution**
-
-En continuant à explorer **les états avec le plus petit f(n)**, on arrive progressivement à la solution en un **minimum de mouvements**.
-
-Voici l’une des solutions trouvées après **14 déplacements** :
-
-1  2  3
-8  0  4
-7  6  5
-
-✔️ **Solution trouvée en 14 étapes avec f(n) = 14 !** 🚀
-
----
-
-### **🔹 Récapitulatif**
-
-1. A\* sélectionne toujours l’état avec le **plus petit coût f(n) = g(n) + h(n)**.
-2. Il explore en priorité les chemins **les plus prometteurs**.
-3. Grâce à l’heuristique de Manhattan, il **évite les détours inutiles**.
-
-👉 **C’est pourquoi A* est très efficace pour résoudre le 8-puzzle !*\*
-
-Tu veux que je génère le chemin détaillé avec chaque mouvement ? 😊
+Comparaison des heuristiques
+Heuristique	Précision	Rapidité	Utilisation
+Misplaced Tiles	Faible	Très rapide	Bonne pour des estimations rapides
+Manhattan Distance	Moyenne	Moyenne	Équilibrée, utilisée souvent
+Linear Conflict	Élevée	Plus lente	Très efficace pour les puzzles

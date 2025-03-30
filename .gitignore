@@ -1,3 +1,4 @@
 build/
 dist/
 n-puzzle_env/
+srcs/__pycache__/

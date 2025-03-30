@@ -4,7 +4,6 @@ class Tile:
         self.puzzle = puzzle
         self._value = value
         self.idx = idx
-        self.misplacement = self._calculate_misplacement(value)
         self.adjacent_tiles = []
 
     @property
@@ -13,18 +12,9 @@ class Tile:
 
     @value.setter
     def value(self, new_val):
-        self._update_misplacement(new_val)
         self._value = new_val
         if new_val == 0:
             self.puzzle.empty_tile = self
-
-    def _calculate_misplacement(self, val):
-        target_idx = self.puzzle.get_target_index_for_value(val)
-        target_pos = self.position.__class__.from_index(target_idx, self.puzzle.dimension)
-        return (target_pos - self.position).manhattan_distance()
-
-    def _update_misplacement(self, val):
-        self.misplacement = self._calculate_misplacement(val)
 
     def discover_adjacent_tiles(self):
         possible_positions = [
