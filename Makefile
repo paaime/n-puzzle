@@ -34,10 +34,6 @@ clean:
 fclean: clean
 	@echo "Deleting virtual environment..."
 	@rm -rf $(NAME)
-	@echo "Deleting saved models..."
-	@rm -f *.npy
-	@rm -f *.png
-	@rm -rf models
 	@echo "Deleting executable..."
 	@rm -rf dist/
 

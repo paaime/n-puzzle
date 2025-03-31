@@ -1,9 +1,10 @@
 import random
+import sys
 
 def exit_with_message(message):
     """Print error message and exit program"""
     print(message)
-    exit(1)
+    sys.exit(1)
 
 def make_puzzle(s, solvable, iterations):
     def swap_empty(p):
